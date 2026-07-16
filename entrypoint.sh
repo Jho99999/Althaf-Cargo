@@ -28,4 +28,15 @@ echo "STORAGE"
 php artisan storage:link || true
 
 echo "APACHE"
+
+a2dismod mpm_event >/dev/null 2>&1 || true
+a2dismod mpm_worker >/dev/null 2>&1 || true
+
+rm -f /etc/apache2/mods-enabled/mpm_event.*
+rm -f /etc/apache2/mods-enabled/mpm_worker.*
+
+a2enmod mpm_prefork >/dev/null 2>&1 || true
+
+apachectl configtest
+
 exec apache2-foreground
