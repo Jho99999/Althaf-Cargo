@@ -65,6 +65,8 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 EXPOSE 80
 
 ENTRYPOINT ["/entrypoint.sh"]
