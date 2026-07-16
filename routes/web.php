@@ -11,7 +11,11 @@ Route::get('/galeri', [HomeController::class, 'gallery'])->name('public.gallery'
 Route::get('/kontak', [HomeController::class, 'contact'])->name('public.contact');
 Route::post('/kontak/kirim', [ContactController::class, 'send'])->name('contact.send');
 
-
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'ok'
+    ]);
+});
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
