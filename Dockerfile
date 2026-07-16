@@ -4,17 +4,20 @@ FROM node:22 AS frontend
 WORKDIR /app
 
 COPY package*.json ./
+
 RUN npm install
 
 COPY . .
+
 RUN npm run build
 
-# ---------- Stage 2 : PHP ----------
-FROM php:8.3-fpm
+
+# ---------- Stage 2 : PHP + Apache ----------
+FROM php:8.3-apache
 
 WORKDIR /var/www/html
 
-# Install dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -30,14 +33,12 @@ RUN apt-get update && apt-get install -y \
         pdo_pgsql \
         pgsql \
         zip \
-        gd
+        gd \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Enable rewrite
+# Enable Apache rewrite
 RUN a2enmod rewrite
-
-RUN a2dismod mpm_event || true \
- && a2dismod mpm_worker || true \
- && a2enmod mpm_prefork
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -45,31 +46,34 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Copy project
 COPY . .
 
-# Install PHP packages
+# Install PHP dependencies
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
     --no-interaction
 
-# Copy built assets
+# Copy Vite build
 COPY --from=frontend /app/public/build ./public/build
 
 # Apache DocumentRoot
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
-/etc/apache2/sites-available/*.conf \
-/etc/apache2/apache2.conf \
-/etc/apache2/conf-available/*.conf
+RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" \
+    /etc/apache2/sites-available/*.conf \
+    /etc/apache2/apache2.conf \
+    /etc/apache2/conf-available/*.conf
 
 # Permission
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
+# Apache ServerName
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Entrypoint
+COPY entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
 
 EXPOSE 80
 
