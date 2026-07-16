@@ -11,6 +11,7 @@ chmod -R 775 storage bootstrap/cache
 
 echo "===== DATABASE ENV ====="
 printenv | grep DB_
+printenv | grep PG
 echo "========================"
 
 php artisan migrate --force
