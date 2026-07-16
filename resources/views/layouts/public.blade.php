@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', config('app.name', 'Kargo Profile'))</title>
+    <title>@yield('title', config('app.name', 'Althaf Cargo'))</title>
     @vite('resources/css/app.css')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +21,7 @@
                     <svg class="w-8 h-8 text-navy-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
                     </svg>
-                    <span>Kargo<span class="text-amber-600">Pro</span></span>
+                    <span>Althaf <span class="text-amber-600">Cargo</span></span>
                 </a>
 
                 <nav class="hidden md:flex space-x-8 text-sm font-medium">
@@ -58,7 +58,7 @@
     <footer class="bg-navy-800 text-gray-100 py-12 mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-                <h3 class="text-white font-semibold text-lg mb-3">KargoPro</h3>
+                <h3 class="text-white font-semibold text-lg mb-3">Althaf Cargo</h3>
                 <p class="text-sm leading-relaxed">Mitra terpercaya pengiriman barang ke seluruh Indonesia. Cepat, aman, dan terpercaya.</p>
             </div>
             <div>
@@ -74,13 +74,13 @@
                 <h4 class="text-white font-semibold mb-3">Kontak</h4>
                 <ul class="space-y-2 text-sm">
                     <li class="text-gray-200">📞 0812-3456-7890</li>
-                    <li class="text-gray-200">✉️ info@kargopro.id</li>
+                    <li class="text-gray-200">✉️ info@althafcargo.id</li>
                     <li class="text-gray-200">📍 Jl. Logistik No. 99, Jakarta</li>
                 </ul>
             </div>
         </div>
         <div class="text-center text-xs text-gray-400 mt-8 border-t border-gray-800 pt-6">
-            &copy; {{ date('Y') }} KargoPro. All rights reserved.
+            &copy; {{ date('Y') }} AlthafCargo. All rights reserved.
         </div>
     </footer>
 

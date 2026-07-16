@@ -13,7 +13,8 @@ class HomeController extends Controller
 
     public function services()
     {
-        return view('public.services');
+        $services = \App\Models\Service::all();
+        return view('public.services', compact('services'));
     }
 
     public function gallery()

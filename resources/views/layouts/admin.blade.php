@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Admin Panel') - {{ config('app.name', 'KargoPro') }}</title>
+    <title>@yield('title', 'Admin Panel') - {{ config('app.name', 'Althaf Cargo') }}</title>
     @vite('resources/css/app.css')
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -22,7 +22,7 @@
     >
         <div class="h-16 flex items-center justify-between px-6 border-b border-navy-700">
             <a href="{{ route('admin.dashboard') }}" class="font-bold text-xl tracking-tight">
-                <span>Kargo</span><span class="text-amber-400">Pro</span>
+                <span>Althaf</span><span class="text-amber-400">Cargo</span>
             </a>
             <button @click="sidebarOpen = false" class="lg:hidden text-gray-300 hover:text-white">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>

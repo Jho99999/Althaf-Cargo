@@ -10,6 +10,9 @@ Route::get('/layanan', [HomeController::class, 'services'])->name('public.servic
 Route::get('/galeri', [HomeController::class, 'gallery'])->name('public.gallery');
 Route::get('/kontak', [HomeController::class, 'contact'])->name('public.contact');
 Route::post('/kontak/kirim', [ContactController::class, 'send'])->name('contact.send');
+Route::get('/kontak/sukses', function () {
+    return view('public.maintenance');
+})->name('contact.success');
 
 Route::get('/health', function () {
     return response()->json([

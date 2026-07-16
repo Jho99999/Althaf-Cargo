@@ -18,6 +18,6 @@ class ContactController extends Controller
 
         ContactMessage::create($validated);
 
-        return back()->with('success', 'Pesan telah dikirim!');
+        return redirect()->route('contact.success');
     }
 }

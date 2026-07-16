@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Beranda - KargoPro')
+@section('title', 'Beranda - Althaf Cargo')
 
 @section('content')
 <section class="bg-gradient-to-br from-navy-800 to-navy-900 text-white py-20">
