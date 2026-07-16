@@ -10,7 +10,7 @@ COPY . .
 RUN npm run build
 
 # ---------- Stage 2 : PHP ----------
-FROM php:8.3-apache
+FROM php:8.3-fpm
 
 WORKDIR /var/www/html
 
@@ -38,7 +38,7 @@ RUN a2enmod rewrite
 RUN a2dismod mpm_event || true \
  && a2dismod mpm_worker || true \
  && a2enmod mpm_prefork
- 
+
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
