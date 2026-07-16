@@ -1,33 +1,67 @@
-FROM php:8.2-apache
+# ---------- Stage 1 : Build Frontend ----------
+FROM node:22 AS frontend
 
-# Install dependensi
-RUN apt-get update && apt-get install -y \
-    libpq-dev libzip-dev zip unzip \
-    && docker-php-ext-install pdo pdo_pgsql zip
+WORKDIR /app
 
-# Aktifkan mod_rewrite
-RUN a2enmod rewrite
+COPY package*.json ./
+RUN npm install
 
-# Atur document root ke /public
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
+COPY . .
+RUN npm run build
 
-# Copy aplikasi
-COPY . /var/www/html
+# ---------- Stage 2 : PHP ----------
+FROM php:8.3-apache
+
 WORKDIR /var/www/html
 
-# Install composer
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    zip \
+    libpq-dev \
+    libzip-dev \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
+        pdo \
+        pdo_pgsql \
+        pgsql \
+        zip \
+        gd
+
+# Enable rewrite
+RUN a2enmod rewrite
+
+# Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-RUN composer install --no-dev --optimize-autoloader
+
+# Copy project
+COPY . .
+
+# Install PHP packages
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction
+
+# Copy built assets
+COPY --from=frontend /app/public/build ./public/build
+
+# Apache DocumentRoot
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
+/etc/apache2/sites-available/*.conf \
+/etc/apache2/apache2.conf \
+/etc/apache2/conf-available/*.conf
 
 # Permission
 RUN chown -R www-data:www-data storage bootstrap/cache
-RUN chmod -R 775 storage bootstrap/cache
 
-# Salin entrypoint
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-EXPOSE 80
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
