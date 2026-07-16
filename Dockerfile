@@ -38,9 +38,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache rewrite
-RUN a2dismod mpm_event || true \
-    && a2dismod mpm_worker || true \
-    && a2dismod mpm_prefork || true \
+RUN rm -f /etc/apache2/mods-enabled/mpm_*.load \
+    && rm -f /etc/apache2/mods-enabled/mpm_*.conf \
     && a2enmod mpm_prefork
 
 # Install Composer
