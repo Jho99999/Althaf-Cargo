@@ -14,6 +14,11 @@ printenv | grep DB_
 printenv | grep PG
 echo "========================"
 
+echo "===== APP ENV ====="
+printenv | grep APP_
+printenv | grep ASSET
+echo "==================="
+
 php artisan migrate --force
 
 php artisan storage:link || true
