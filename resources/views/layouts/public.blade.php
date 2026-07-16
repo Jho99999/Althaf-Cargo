@@ -18,9 +18,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <a href="{{ route('home') }}" class="flex items-center space-x-2 font-bold text-xl text-navy-800">
-                    <svg class="w-8 h-8 text-navy-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
-                    </svg>
+                    <img src="{{ asset('images/althaf-logo.png') }}" alt="Althaf Cargo Logo" class="h-10 w-auto">
                     <span>Althaf <span class="text-amber-600">Cargo</span></span>
                 </a>
 
