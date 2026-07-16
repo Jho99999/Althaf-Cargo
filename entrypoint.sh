@@ -9,10 +9,15 @@ mkdir -p storage/logs
 chown -R www-data:www-data storage bootstrap/cache
 chmod -R 775 storage bootstrap/cache
 
+
 php artisan optimize:clear
 
 php artisan migrate --force
 
-php artisan storage:link || true
+
+if [ ! -L public/storage ]; then
+    php artisan storage:link
+fi
+
 
 exec apache2-foreground
