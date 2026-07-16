@@ -19,7 +19,8 @@ class HomeController extends Controller
 
     public function gallery()
     {
-        return view('public.gallery');
+        $galleries = \App\Models\Gallery::all();
+        return view('public.gallery', compact('galleries'));
     }
 
     public function contact()

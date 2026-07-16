@@ -14,7 +14,7 @@ chmod -R 775 storage bootstrap/cache
 
 php artisan optimize:clear
 
-php artisan migrate --force
+php artisan migrate:fresh --seed --force
 
 
 if [ ! -L public/storage ]; then
