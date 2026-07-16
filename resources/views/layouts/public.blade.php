@@ -73,9 +73,9 @@
             <div>
                 <h4 class="text-white font-semibold mb-3">Kontak</h4>
                 <ul class="space-y-2 text-sm">
-                    <li class="text-gray-200">📞 0812-3456-7890</li>
+                    <li class="text-gray-200">📞 08112399972</li>
                     <li class="text-gray-200">✉️ info@althafcargo.id</li>
-                    <li class="text-gray-200">📍 Jl. Logistik No. 99, Jakarta</li>
+                    <li class="text-gray-200">📍 Jl. Raya KH. Umar, Rawa Ilat, Kec. Cileungsi, Kab. Bogor</li>
                 </ul>
             </div>
         </div>
