@@ -41,11 +41,15 @@ RUN apt-get update && apt-get install -y \
 
 
 # Fix Apache MPM conflict
-RUN rm -f /etc/apache2/mods-enabled/mpm_*.load \
-    && rm -f /etc/apache2/mods-enabled/mpm_*.conf \
+RUN a2dismod mpm_event || true \
+    && a2dismod mpm_worker || true \
+    && a2dismod mpm_prefork || true \
     && a2enmod mpm_prefork \
-    && a2enmod rewrite
+    && a2enmod rewrite \
+    && rm -f /etc/apache2/mods-enabled/mpm_event.load \
+    && rm -f /etc/apache2/mods-enabled/mpm_event.conf
 
+RUN ls -la /etc/apache2/mods-enabled/ | grep mpm
 
 # Check active MPM (should show only mpm_prefork)
 RUN apache2ctl -M | grep mpm
