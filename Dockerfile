@@ -12,13 +12,13 @@ COPY . .
 RUN npm run build
 
 
-# ---------- Stage 2 : PHP + Apache ----------
-FROM php:8.3-apache-bookworm
+# ---------- Stage 2 : PHP Runtime ----------
+FROM php:8.3-cli
 
 WORKDIR /var/www/html
 
 
-# Install system dependencies + PHP extensions
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -33,72 +33,36 @@ RUN apt-get update && apt-get install -y \
         pdo \
         pdo_pgsql \
         pgsql \
-        pdo_mysql \
         zip \
         gd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 
-# Fix Apache MPM conflict
-# Fix Apache MPM conflict
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.load \
-          /etc/apache2/mods-enabled/mpm_event.conf \
-          /etc/apache2/mods-enabled/mpm_worker.load \
-          /etc/apache2/mods-enabled/mpm_worker.conf \
-          /etc/apache2/mods-enabled/mpm_prefork.load \
-          /etc/apache2/mods-enabled/mpm_prefork.conf \
-    && ln -s /etc/apache2/mods-available/mpm_prefork.load \
-          /etc/apache2/mods-enabled/mpm_prefork.load \
-    && ln -s /etc/apache2/mods-available/mpm_prefork.conf \
-          /etc/apache2/mods-enabled/mpm_prefork.conf \
-    && a2enmod rewrite
-
-RUN echo "===== FINAL MPM =====" \
-    && ls -la /etc/apache2/mods-enabled/ | grep mpm
-    
-RUN ls -la /etc/apache2/mods-enabled/ | grep mpm
-
-# Check active MPM (should show only mpm_prefork)
-RUN apache2ctl -M | grep mpm
-
-
-# Install Composer
+# Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 
-# Copy Laravel project
+# Laravel source
 COPY . .
 
 
-# Install Laravel dependencies
+# PHP packages
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
     --no-interaction
 
 
-# Copy Vite build
+# Vite build
 COPY --from=frontend /app/public/build ./public/build
 
 
-# Apache DocumentRoot -> Laravel public
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-
-RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" \
-    /etc/apache2/sites-available/*.conf
-
-
-# Permissions
+# Permission
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
 
-# Apache ServerName
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-
-
-# Entrypoint
 COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
