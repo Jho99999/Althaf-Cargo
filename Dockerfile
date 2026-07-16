@@ -54,6 +54,8 @@ RUN composer install \
     --optimize-autoloader \
     --no-interaction
 
+RUN apache2ctl -M | grep mpm
+
 # Copy Vite build
 COPY --from=frontend /app/public/build ./public/build
 
