@@ -12,25 +12,82 @@
 
 <div class="max-w-6xl mx-auto px-6 sm:px-8 py-16">
     @if($services->count() > 0)
-        <div class="space-y-32">
+        <div class="space-y-14">
             @foreach($services as $service)
-                <div class="bg-white p-10 rounded-lg border border-gray-200 shadow-md hover:shadow-lg hover:border-amber-300 transition mb-8">
-                    <div class="flex items-start gap-8 px-4 py-3">
-                        <div class="flex-shrink-0 bg-amber-50 rounded-full p-4">
-                            <svg class="w-8 h-8 text-amber-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 7h18M5 7v10a2 2 0 002 2h10a2 2 0 002-2V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="font-bold text-2xl text-navy-800 mb-3">{{ $service->name }}</h3>
-                            @if($service->price)
-                                <p class="text-amber-600 font-semibold text-base mb-6">{{ $service->price }}</p>
-                            @endif
-                            <p class="text-gray-600 leading-relaxed text-base">{{ $service->description }}</p>
-                        </div>
+
+            @php
+                $image = match($service->name) {
+                    'Kargo Darat' => asset('images/services/truck.jpg'),
+                    'Kargo Udara' => asset('images/services/air.jpg'),
+                    'Kargo Laut' => asset('images/services/ship.jpg'),
+                    default => asset('images/services/default.jpg'),
+                };
+            @endphp
+
+            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-300">
+
+                <div class="grid md:grid-cols-2">
+
+                    <!-- Gambar -->
+                    <div>
+                        <img
+                            src="{{ $image }}"
+                            alt="{{ $service->name }}"
+                            class="w-full h-80 object-cover">
                     </div>
+
+                    <!-- Konten -->
+                    <div class="p-10 flex flex-col justify-center">
+
+                        <div class="inline-flex items-center gap-3 mb-5">
+
+                            <div class="bg-amber-100 p-3 rounded-full">
+                                <svg class="w-7 h-7 text-amber-600"
+                                    viewBox="0 0 24 24"
+                                    fill="none">
+
+                                    <path
+                                        d="M3 7h18M5 7v10a2 2 0 002 2h10a2 2 0 002-2V7"
+                                        stroke="currentColor"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"/>
+
+                                </svg>
+                            </div>
+
+                            <h2 class="text-3xl font-bold text-navy-800">
+                                {{ $service->name }}
+                            </h2>
+
+                        </div>
+
+                        @if($service->price)
+                            <div class="mb-6">
+                                <span class="bg-amber-500 text-white px-4 py-2 rounded-full font-semibold">
+                                    {{ $service->price }}
+                                </span>
+                            </div>
+                        @endif
+
+                        <p class="text-gray-600 leading-8 text-lg">
+                            {{ $service->description }}
+                        </p>
+
+                        <a href="{{ route('public.contact') }}"
+                            class="mt-8 inline-flex w-fit bg-navy-800 text-white px-6 py-3 rounded-lg hover:bg-navy-700 transition">
+
+                            Konsultasi Sekarang
+
+                        </a>
+
+                    </div>
+
                 </div>
-            @endforeach
+
+            </div>
+
+        @endforeach
         </div>
     @else
         <div class="text-center py-12">

@@ -53,7 +53,7 @@
         @yield('content')
     </main>
 
-    <footer class="bg-navy-800 text-gray-100 py-12 mt-16">
+    <footer class="bg-navy-950 border-t border-white/10 text-gray-100 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
                 <h3 class="text-white font-semibold text-lg mb-3">Althaf Cargo</h3>
