@@ -17,12 +17,18 @@
                 Solusi Logistik Nasional
             </span>
 
-            <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-6">
+            <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-6 text-white drop-shadow-2xl">
+
                 Pengiriman Barang
-                <span class="text-amber-400">
+
+                <span class="block text-amber-400">
                     Cepat, Aman,
                 </span>
-                dan Terpercaya
+
+                <span class="block">
+                    dan Terpercaya
+                </span>
+
             </h1>
 
             <p class="text-xl text-gray-200 leading-relaxed mb-8">
